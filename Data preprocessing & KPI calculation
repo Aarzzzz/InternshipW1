@@ -1,0 +1,25 @@
+import pandas as pd
+import numpy as np
+
+# Simulate a sample logistics dataset
+data = {
+    'route_id': [101, 102, 103, 104, 105],
+    'planned_time_hrs': [2.5, 4.0, 1.5, 3.0, 5.0],
+    'actual_time_hrs': [2.4, 4.5, 1.5, 3.2, 4.8],
+    'cargo_weight_kg': [850, 1200, 450, 980, 1400],
+    'max_capacity_kg': [1000, 1500, 500, 1000, 1500],
+    'fuel_cost_usd': [45, 80, 25, 55, 90]
+}
+
+df = pd.DataFrame(data)
+
+# KPI 1: Calculate On-Time Delivery Flag (1 if actual <= planned, else 0)
+df['is_on_time'] = (df['actual_time_hrs'] <= df['planned_time_hrs']).astype(int)
+otd_rate = df['is_on_time'].mean() * 100
+
+# KPI 2: Capacity Utilization Rate
+df['capacity_utilization_pct'] = (df['cargo_weight_kg'] / df['max_capacity_kg']) * 100
+avg_utilization = df['capacity_utilization_pct'].mean()
+
+print(f"On-Time Delivery (OTD) Rate: {otd_rate:.2f}%")
+print(f"Average Fleet Capacity Utilization: {avg_utilization:.2f}%")
